@@ -1,12 +1,9 @@
-"""
-Interactive Clinical Decision Support System & Explainable AI Dashboard
-Malaria Diagnosis & Severity Prediction (Final Year Project)
-"""
+import os
+import json
+import joblib
 import streamlit as st
 import pandas as pd
 import numpy as np
-import joblib
-import json
 import matplotlib.pyplot as plt
 import seaborn as sns
 import shap
@@ -23,6 +20,8 @@ st.set_page_config(
     layout="wide",
     initial_sidebar_state="expanded"
 )
+
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 
 # Custom CSS for rich aesthetics
 st.markdown("""
@@ -74,14 +73,20 @@ st.markdown("""
 
 @st.cache_resource
 def load_assets():
-    stacking_model = joblib.load('saved_models/malaria_stacking_model.joblib')
-    base_models = joblib.load('saved_models/base_models.joblib')
-    scaler = joblib.load('saved_models/scaler.joblib')
-    with open('saved_models/feature_columns.json', 'r') as f:
+    model_path = os.path.join(BASE_DIR, 'saved_models', 'malaria_stacking_model.joblib')
+    base_models_path = os.path.join(BASE_DIR, 'saved_models', 'base_models.joblib')
+    scaler_path = os.path.join(BASE_DIR, 'saved_models', 'scaler.joblib')
+    cols_path = os.path.join(BASE_DIR, 'saved_models', 'feature_columns.json')
+    data_path = os.path.join(BASE_DIR, 'malaria_dataset.csv')
+
+    stacking_model = joblib.load(model_path)
+    base_models = joblib.load(base_models_path)
+    scaler = joblib.load(scaler_path)
+    with open(cols_path, 'r') as f:
         feature_cols = json.load(f)
     
     # Train data for background
-    df_raw = pd.read_csv('malaria_dataset.csv')
+    df_raw = pd.read_csv(data_path)
     df_feat = extract_clinical_features(df_raw)
     class_0 = df_feat[df_feat['severe_maleria'] == 0]
     class_1 = df_feat[df_feat['severe_maleria'] == 1]
@@ -103,7 +108,7 @@ def load_assets():
 try:
     stacking_model, base_models, scaler, feature_cols, xai_suite, X_bg_scaled = load_assets()
 except Exception as e:
-    st.error(f"Please run `python train_and_export.py` first to generate models and assets. Error: {e}")
+    st.error(f"Error loading models/assets: {e}")
     st.stop()
 
 # Header
