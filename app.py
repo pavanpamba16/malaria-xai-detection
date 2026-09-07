@@ -12,6 +12,9 @@ import lime.lime_tabular
 
 from src.features import extract_clinical_features
 from src.explainability import ExplainabilitySuite
+from src.models import get_base_models, build_stacking_ensemble
+from sklearn.preprocessing import RobustScaler
+from sklearn.model_selection import train_test_split
 
 # Page configuration
 st.set_page_config(
@@ -79,21 +82,40 @@ def load_assets():
     cols_path = os.path.join(BASE_DIR, 'saved_models', 'feature_columns.json')
     data_path = os.path.join(BASE_DIR, 'malaria_dataset.csv')
 
-    stacking_model = joblib.load(model_path)
-    base_models = joblib.load(base_models_path)
-    scaler = joblib.load(scaler_path)
-    with open(cols_path, 'r') as f:
-        feature_cols = json.load(f)
-    
-    # Train data for background
     df_raw = pd.read_csv(data_path)
     df_feat = extract_clinical_features(df_raw)
     class_0 = df_feat[df_feat['severe_maleria'] == 0]
     class_1 = df_feat[df_feat['severe_maleria'] == 1]
     class_1_over = class_1.sample(len(class_0), replace=True, random_state=42)
     df_balanced = pd.concat([class_1_over, class_0], axis=0).reset_index(drop=True)
-    X_bg = df_balanced.drop(columns=['severe_maleria'])
-    X_bg_scaled = pd.DataFrame(scaler.transform(X_bg), columns=feature_cols)
+    X = df_balanced.drop(columns=['severe_maleria'])
+    y = df_balanced['severe_maleria']
+    
+    if os.path.exists(cols_path):
+        with open(cols_path, 'r') as f:
+            feature_cols = json.load(f)
+    else:
+        feature_cols = list(X.columns)
+
+    # Try loading pre-saved models, with automatic training fallback if environment version differs
+    try:
+        stacking_model = joblib.load(model_path)
+        base_models = joblib.load(base_models_path)
+        scaler = joblib.load(scaler_path)
+        X_bg_scaled = pd.DataFrame(scaler.transform(X), columns=feature_cols)
+    except Exception:
+        # Graceful on-the-fly training
+        scaler = RobustScaler()
+        X_train, _, y_train, _ = train_test_split(X, y, test_size=0.30, random_state=101)
+        X_train_scaled = pd.DataFrame(scaler.fit_transform(X_train), columns=feature_cols)
+        X_bg_scaled = pd.DataFrame(scaler.transform(X), columns=feature_cols)
+
+        base_models = get_base_models(random_state=123)
+        for _, m in base_models.items():
+            m.fit(X_train_scaled, y_train)
+
+        stacking_model = build_stacking_ensemble(base_models, meta_c=1.5, random_state=42)
+        stacking_model.fit(X_train_scaled, y_train)
     
     # Initialize XAI Suite
     xai_suite = ExplainabilitySuite(
