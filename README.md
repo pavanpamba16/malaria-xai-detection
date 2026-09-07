@@ -1,6 +1,6 @@
 # 🦟 Explainable AI Malaria Severity Diagnosis & Clinical Decision Support System
 
-[![Streamlit App](https://static.streamlit.io/badges/streamlit_badge_black_white.svg)](https://malaria-xai-detection.streamlit.app/)
+[![Streamlit App](https://static.streamlit.io/badges/streamlit_badge_black_white.svg)](https://pavanpamba16-malaria-xai-detection-streamlit-app-jbq5zv.streamlit.app/)
 [![Python 3.10+](https://img.shields.io/badge/Python-3.10%2B-blue.svg)](https://www.python.org/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](https://opensource.org/licenses/MIT)
 [![Model Accuracy](https://img.shields.io/badge/Accuracy-86.47%25-success.svg)](#-benchmark-comparison-vs-2025-paper)
@@ -14,9 +14,7 @@
 
 Experience the real-time AI triage dashboard, SHAP & LIME local explainability, and counterfactual "What-If" clinical simulations directly in your browser:
 
-👉 **[Launch Live Clinical Decision Support System](https://malaria-xai-detection.streamlit.app/)** 
-
-*(If your deployment has a custom URL, you can update the link above in this README)*.
+👉 **[Launch Live Clinical Decision Support System](https://pavanpamba16-malaria-xai-detection-streamlit-app-jbq5zv.streamlit.app/)** 
 
 ---
 
