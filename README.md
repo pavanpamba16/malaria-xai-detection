@@ -1,38 +1,36 @@
-# 🦟 Explainable AI Malaria Severity Diagnosis & Clinical Decision Support
-### **Final Year Capstone Project**
-*Based on & Outperforming: Awe et al. (2025) - BMC Medical Informatics and Decision Making (25:162)*
+# 🦟 Explainable AI Malaria Severity Diagnosis & Clinical Decision Support System
+
+[![Streamlit App](https://static.streamlit.io/badges/streamlit_badge_black_white.svg)](https://malaria-xai-detection.streamlit.app/)
+[![Python 3.10+](https://img.shields.io/badge/Python-3.10%2B-blue.svg)](https://www.python.org/)
+[![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](https://opensource.org/licenses/MIT)
+[![Model Accuracy](https://img.shields.io/badge/Accuracy-86.47%25-success.svg)](#-benchmark-comparison-vs-2025-paper)
+
+> **Final Year Capstone Project**  
+> *Outperforming Published Baseline: Awe et al. (2025) - BMC Medical Informatics and Decision Making (25:162)*
 
 ---
 
-## 🌟 Key Highlights
-- **Accuracy Improvement**: **86.47%** vs **81.95%** in the 2025 paper (+4.52% boost).
-- **Precision Gain**: **89.55%** vs **83.10%** in the 2025 paper (+6.45% boost).
+## 🌐 Live Interactive Web Application
+
+Experience the real-time AI triage dashboard, SHAP & LIME local explainability, and counterfactual "What-If" clinical simulations directly in your browser:
+
+👉 **[Launch Live Clinical Decision Support System](https://malaria-xai-detection.streamlit.app/)** 
+
+*(If your deployment has a custom URL, you can update the link above in this README)*.
+
+---
+
+## 🌟 Key Project Highlights
+
+- **Accuracy Boost**: **86.47%** vs **81.95%** in the published 2025 paper (**+4.52% boost**).
+- **Precision Gain**: **89.55%** vs **83.10%** in the 2025 paper (**+6.45% boost**).
 - **Matthews Correlation Coefficient (MCC)**: **0.7305** vs **0.6374** in the paper.
-- **Explainable AI**: SHAP (Beeswarm, Bar, Waterfall), LIME, and Counterfactual ("What-If") Clinical Reasoning.
-- **Interactive Web App**: Complete Streamlit dashboard for real-time patient diagnosis and visual triage.
+- **Explainable AI (XAI)**: Dual-layer interpretability with SHAP (Global Beeswarm & Waterfall plots), LIME Local feature scoring, and Counterfactual triage simulations.
+- **Ensemble Architecture**: 2-Level Stacking Meta-Ensemble combining CatBoost, Random Forest, Extra Trees, and Logistic Regression Meta-Learner.
 
 ---
 
-## 🚀 Quickstart Guide
-
-### 1. Run Master Pipeline (Trains all models & generates plots)
-```bash
-python train_and_export.py
-```
-
-### 2. Launch Interactive Clinical Web Application
-```bash
-streamlit run app.py
-```
-
-### 3. Open Complete Research Notebook
-```bash
-jupyter notebook Malaria_XAI_Final_Year_Project.ipynb
-```
-
----
-
-## 📊 Benchmark Comparison vs 2025 Paper
+## 📊 Benchmark Results vs. 2025 Paper
 
 | Model | Accuracy | ROC-AUC | MCC | Precision | Recall | F1 Score |
 | :--- | :---: | :---: | :---: | :---: | :---: | :---: |
@@ -47,4 +45,44 @@ jupyter notebook Malaria_XAI_Final_Year_Project.ipynb
 | **Paper: AdaBoost (2025)** | 57.89% | 0.6336 | 0.1558 | 60.87% | 59.15% | 60.00% |
 
 ---
-*For detailed methodology, mathematical formulations, and clinical analysis, see [PROJECT_REPORT.md](file:///c:/Users/pamba/OneDrive/Desktop/Mani_05/PROJECT_REPORT.md).*
+
+## 📈 Visual Benchmark Plots & Explainability
+
+| Confusion Matrix | ROC-AUC Curves |
+| :---: | :---: |
+| ![Confusion Matrix](plots/confusion_matrix.png) | ![ROC Curves](plots/roc_auc_curves.png) |
+
+| SHAP Global Importance | SHAP Beeswarm Summary |
+| :---: | :---: |
+| ![Feature Importance](plots/shap_feature_importance.png) | ![SHAP Beeswarm](plots/shap_summary_beeswarm.png) |
+
+---
+
+## 🚀 Running Locally
+
+### 1. Clone the repository
+```bash
+git clone https://github.com/pavanpamba16/malaria-xai-detection.git
+cd malaria-xai-detection
+```
+
+### 2. Install dependencies
+```bash
+pip install -r requirements.txt
+```
+
+### 3. Launch the Streamlit Web Application
+```bash
+streamlit run app.py
+```
+
+### 4. Retrain Models & Generate Plots
+```bash
+python train_and_export.py
+```
+
+---
+
+## 📄 Documentation & Reports
+- **Detailed Project Report**: [PROJECT_REPORT.md](PROJECT_REPORT.md)
+- **Research Notebook**: [Malaria_XAI_Final_Year_Project.ipynb](Malaria_XAI_Final_Year_Project.ipynb)
